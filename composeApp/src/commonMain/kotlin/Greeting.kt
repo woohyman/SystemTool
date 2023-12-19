@@ -5,3 +5,11 @@ class Greeting {
         return "Hello, ${platform.name}!"
     }
 }
+
+class Operate {
+    private val platform = getPlatform()
+
+    suspend fun operate(): Boolean {
+        return platform.shutDown()
+    }
+}
