@@ -1,6 +1,6 @@
-class WasmPlatform: Platform {
+class WasmPlatform : Platform {
     override val name: String = "Web with Kotlin/Wasm"
-    override suspend fun shutDown(): Boolean {
+    override suspend fun shutDown(hour: Int, minute: Int, is24hour: Boolean): Boolean {
         return true
     }
 }

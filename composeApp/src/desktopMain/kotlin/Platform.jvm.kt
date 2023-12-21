@@ -1,11 +1,12 @@
 import java.io.IOException
+import java.time.LocalDateTime
 import java.util.Calendar
 import java.util.Timer
 import java.util.TimerTask
 
 
 class JVMPlatform : Platform {
-    override val name: String = "Java ${System.getProperty("java.version")}"
+    override val name: String = "设置成功"
     override suspend fun shutDown(hour: Int, minute: Int, is24hour: Boolean): Boolean {
         timer(hour, minute, is24hour) {
             try {
@@ -27,7 +28,7 @@ class JVMPlatform : Platform {
  * Timer.scheduleAtFixedRate(TimerTask task,Date firstTime,long period)
  */
 fun timer(hour: Int, minute: Int, is24hour: Boolean, task: () -> Unit) {
-    println("hour ==> " + hour + ", minute ==> " + minute + ", is24hour ==> " + is24hour)
+
     val calendar = Calendar.getInstance()
     // 控制小时
     if (is24hour) {
@@ -36,8 +37,15 @@ fun timer(hour: Int, minute: Int, is24hour: Boolean, task: () -> Unit) {
         calendar[Calendar.HOUR] = hour
     }
     calendar[Calendar.MINUTE] = minute // 控制分钟
-    val time = calendar.time //获取当前系统时间
+    var time = calendar.time //获取当前系统时间
+    if (time.time < System.currentTimeMillis()) {
+        calendar[Calendar.DAY_OF_MONTH] = LocalDateTime.now().dayOfMonth + 1
+    }
+    time = calendar.time
     val timer = Timer()
+
+    println("time ==> " + time)
+
     timer.scheduleAtFixedRate(object : TimerTask() {
         override fun run() {
             task()

@@ -1,5 +1,3 @@
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
@@ -9,7 +7,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,7 +17,6 @@ import androidx.compose.ui.Modifier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalResourceApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -31,25 +27,30 @@ fun App() {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
 
             val scope = rememberCoroutineScope()
-            val state = rememberTimePickerState()
+            val state = rememberTimePickerState(
+                is24Hour = true
+            )
             TimePicker(state = state)
 
             Button(onClick = {
-                greetingText = "Compose: ${Greeting().greet()}"
+//                greetingText = "设置成功"
                 showImage = !showImage
                 scope.launch(Dispatchers.Default) {
-                    Operate().operate(state.hour,state.minute,state.is24hour)
+                    Operate().operate(state.hour, state.minute, state.is24hour)
                 }
 
+                Toast
             }) {
                 Text(greetingText)
             }
-            AnimatedVisibility(showImage) {
-                Image(
-                    painterResource("compose-multiplatform.xml"),
-                    null
-                )
-            }
+//            val showTime = "${state.hour}:${state.minute}"
+//            Text(showTime)
+//            AnimatedVisibility(showImage) {
+//                Image(
+//                    painterResource("compose-multiplatform.xml"),
+//                    null
+//                )
+//            }
         }
     }
 }
