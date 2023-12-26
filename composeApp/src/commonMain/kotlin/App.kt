@@ -39,7 +39,6 @@ fun App() {
                     Operate().operate(state.hour, state.minute, state.is24hour)
                 }
 
-                Toast
             }) {
                 Text(greetingText)
             }
